@@ -1,7 +1,8 @@
 const graphql = require("graphql");
 const _ = require("lodash");
 const Book = require("../models/book")
-const Author = require("../models/author")
+const Author = require("../models/author.js")
+
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -51,7 +52,7 @@ const RootQuery = new GraphQLObjectType({
       type: BookType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        console.log(typeof args.id);
+        // console.log(typeof args.id);
         // return _.find(books, { id: args.id });
       }
     },
@@ -76,6 +77,80 @@ const RootQuery = new GraphQLObjectType({
     }
   }
 });
+
+
+const Mutation = new GraphQLObjectType({
+    name:"Mutation",
+    fields:{
+        addAuthor:{
+            type: AuthorType,
+            args:{
+                name:{type: GraphQLString},
+                age:{type: GraphQLInt}
+            },
+            resolve(parent, args){
+                let author = new Author({
+                    name: args.name,
+                    age: args.age
+                })
+                return author.save()
+            }
+        },
+        addBook:{
+            type: BookType,
+            args:{
+                name: {type: GraphQLString},
+                genre: {type: GraphQLString},
+                authorId:{type: GraphQLID}
+            },
+            resolve(parent, args){
+                let book = new Book({
+                    name: args.name,
+                    genre: args.genre,
+                    authorId: args.authorId
+                })
+                return book.save()
+            
+            }
+        }
+    }
+})
+
+//mutation example on graphiql sandbox
+// mutation{
+//     addAuthor(name: "Bob Dillom", age: 42){
+//       name 
+//       age
+//     }
+//   }
+
+
+
+// const Mutation = new GraphQLObjectType({
+//     name: "Mutation",
+//     fields:{
+//         addAuthor:{
+//             type: AuthorType,
+//             args:{
+//                 name: {type: GraphQLString},
+//                 age:{type: GraphQLInt}
+//             },
+//             resolve(parent, args){
+//                 //create an instance of Author collection
+//                 let author = new Author({
+//                     name: args.name,
+//                     age: args.age
+//                 })
+//                 //save the instance of the datatype to database
+//                 return author.save()
+//             }
+//         },
+
+//     } 
+// })
+
+
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });

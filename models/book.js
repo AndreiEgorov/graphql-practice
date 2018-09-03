@@ -1,5 +1,6 @@
 //creating book model/ collection
-const mongoose = require("mongoose"),
+const mongoose = require("mongoose")
+
 const Schema = mongoose.Schema;
 
 const bookSchema = new Schema({
