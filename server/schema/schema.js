@@ -148,6 +148,7 @@ const Mutation = new GraphQLObjectType({
     }
 })
 
+
 //mutation example on graphiql sandbox
 // mutation{
 //     addAuthor(name: "Bob Dillom", age: 42){

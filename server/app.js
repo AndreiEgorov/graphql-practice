@@ -2,8 +2,10 @@ const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const schema = require("./schema/schema");
 const mongoose = require("mongoose");
+const cors = require('cors') //to allow cross origin requests/ graphql query such as getBooksQuery will be fetched form localhost 4000/graphql adn provided to react server
 
 const app = express();
+app.use(cors())
 
 //connect to mlab database
 mongoose.connect(
